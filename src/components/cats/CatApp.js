@@ -2,11 +2,12 @@ import React,
     { useState,
       useEffect, 
       useCallback}  from "react";
+import { Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import styles from './catApp.module.css';
 import Catlist from "./components/CatList";
-import CatDetails from "./components/CatDetails";
 import Search from './components/Search';
+import CatItem from "./components/CatItem";
 
 const url = 'https://serene-mesa-35124.herokuapp.com/files/cats/list.json';
 const url2 = 'https://serene-mesa-35124.herokuapp.com/files';
@@ -122,13 +123,12 @@ const filteredCats = filterCats();
   return (
     <div className = {styles.app}>
       <Search onChange={(e) => setInputValue(e.target.value)}/>
-      <div className={styles.mainBlock}>
-        <Catlist cats={ filteredCats ? filteredCats : cats } toBuy = {toBuy} removeCat={removeCat}/>
-              {/* условный рендеринг */}
-      {catsDetails && (
-        <CatDetails catsDetails={catsDetails} url={url2}/>
-      )}
-      </div>
+
+      <Routes >
+        <Route path="/" element={<Catlist cats={ filteredCats ? filteredCats : cats } toBuy = {toBuy} removeCat={removeCat}/>} />
+        <Route path="/catlist/:id" element={<CatItem />} />
+      </Routes>
+
     </div>
   )
 }
